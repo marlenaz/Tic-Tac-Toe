@@ -1,0 +1,12 @@
+#board {
+  width: 150px;
+  height: 150px;
+}
+
+.board {
+  display: inline-block;
+  height: 50px;
+  width: 50px;
+  position: relative;
+  background-color: grey;
+}

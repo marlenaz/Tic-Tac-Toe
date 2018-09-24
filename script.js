@@ -1,35 +1,53 @@
+//------Game board function -------------------------------------------//
 const gameboard = (() => {
-  //Functions and variables
-  const board = ["X", "X", "X", "X", "X", "X","X", "X", "X"];
-  return {
-    board
-  };
-})();
+  //Variables
+  let boardArray = [];
+  const board = document.getElementById("board");
 
-const gameFlow = (() => {
-  //Start gameFlow
+  //Functions
+       //----render first, visual board---//
   const renderBoard = () => {
-    const boardPattern = ["X", "O", "X", "O", "X", "O","X", "O", "X"];
-    const board = document.getElementById("board");
-    boardPattern.forEach((mark) => {
-      const boardPiece = document.createElement("div");
-      board.appendChild(boardPiece);
-      boardPiece.textContent = mark;
-    })
+      boardArray = ["X", "O", "X", "O", "X", "O", "X", "O", "X"];
+      boardArray.forEach((mark) => {
+        const boardPiece = document.createElement("div");
+        board.appendChild(boardPiece);
+        boardPiece.setAttribute("class", "board");
+        boardPiece.textContent = mark;
+      })
   }
-
-  const startNewGame; //function that starts the game after clicking on button
-
+      //----delete visual content of the borad, ready to players marks---//
+  const startGame = () => {
+      const startButton = document.getElementById("start");
+      const markSpace = document.querySelectorAll(".board");
+      startButton.addEventListener("click", () => {
+        //on click - boardpiece textContent = ""
+        markSpace.forEach((space) => space.textContent = "");
+      })
+  }
   return {
-    renderBoard
+      renderBoard,
+      startGame
   };
 })();
 
+//-----Game flow function--------------------------------------------------//
+const gameFlow = (() => {
+  //functions
+
+  return {
+
+  };
+})();
+
+//-----Player objects --------------------------------------------------------//
 const Player = (name, mark) => {
   //Functions
   return { name, mark };
 };
 const player1 = Player("player1", "O");
 const layer2 = Player("player2", "X");
-//Game
-gameFlow.renderBoard();
+
+
+//-----Iitializing game-----------------------------------------------------//
+gameboard.renderBoard();
+gameboard.startGame();
