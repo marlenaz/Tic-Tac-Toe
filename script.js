@@ -20,11 +20,11 @@ const gameboard = (() => {
       const startButton = document.getElementById("start");
       const markSpace = document.querySelectorAll(".board");
       startButton.addEventListener("click", () => {
-        //on click - boardpiece textContent = ""
         markSpace.forEach((space) => space.textContent = "");
       })
   }
   return {
+      //Functions
       renderBoard,
       startGame
   };
@@ -33,21 +33,45 @@ const gameboard = (() => {
 //-----Game flow function--------------------------------------------------//
 const gameFlow = (() => {
   //functions
+      const firstTurn = () => {
+          const startButton = document.getElementById("start");
+          startButton.addEventListener("click", player1.makeMove);
+      }
 
-  return {
+      const playerTurn = () => {
 
-  };
+      }
+
+  return { firstTurn };
 })();
 
 //-----Player objects --------------------------------------------------------//
 const Player = (name, mark) => {
+  //Variables
+      let nextMove = true;
   //Functions
-  return { name, mark };
+    //---putting players mark on the board---//
+      const makeMove = () => {
+          const markSpace = document.querySelectorAll(".board");
+          markSpace.forEach((space) => {
+            if (space.textContent === "") {
+              space.addEventListener("click", () => {
+              space.textContent = mark;
+              let comment = document.getElementById("comment");
+              comment.textContent = name + " made his move!";
+              })
+            }
+          });
+      }
+
+  return { name, mark, nextMove, makeMove };
 };
 const player1 = Player("player1", "O");
-const layer2 = Player("player2", "X");
+const player2 = Player("player2", "X");
 
 
 //-----Iitializing game-----------------------------------------------------//
 gameboard.renderBoard();
 gameboard.startGame();
+gameFlow.firstTurn();
+console.log(player1);
