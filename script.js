@@ -24,6 +24,7 @@ const gameboard = (() => {
       })
   }
   return {
+      board,
       //Functions
       renderBoard,
       startGame
@@ -33,16 +34,18 @@ const gameboard = (() => {
 //-----Game flow function--------------------------------------------------//
 const gameFlow = (() => {
   //functions
-      const firstTurn = () => {
-          const startButton = document.getElementById("start");
-          startButton.addEventListener("click", player1.makeMove);
+    //---changing marks from o to x---//
+      const playersTurns = () => {
+          board.addEventListener("mouseover", () => {
+            if (player1.nextMove === true) {
+              player1.makeMove(player1, player2);
+            } else {
+              player2.makeMove(player2, player1);
+            }
+          });
       }
 
-      const playerTurn = () => {
-
-      }
-
-  return { firstTurn };
+  return { /*firstTurn,*/ playersTurns };
 })();
 
 //-----Player objects --------------------------------------------------------//
@@ -51,7 +54,7 @@ const Player = (name, mark) => {
       let nextMove = true;
   //Functions
     //---putting players mark on the board---//
-      const makeMove = () => {
+      const makeMove = (playerObj, nextPlayerObj) => {
           const markSpace = document.querySelectorAll(".board");
           markSpace.forEach((space) => {
             if (space.textContent === "") {
@@ -59,6 +62,8 @@ const Player = (name, mark) => {
               space.textContent = mark;
               let comment = document.getElementById("comment");
               comment.textContent = name + " made his move!";
+              playerObj.nextMove = false;
+              nextPlayerObj.nextMove = true;
               })
             }
           });
@@ -73,5 +78,7 @@ const player2 = Player("player2", "X");
 //-----Iitializing game-----------------------------------------------------//
 gameboard.renderBoard();
 gameboard.startGame();
-gameFlow.firstTurn();
+gameFlow.playersTurns();
+//umiescic funkcje w funkcjach
 console.log(player1);
+console.log(player2);
