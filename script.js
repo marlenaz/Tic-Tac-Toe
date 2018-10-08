@@ -57,7 +57,7 @@ const gameFlow = (() => {
       }
 
         //---sprawdza czy jest win---//
-      const playerWon = (mark) => {
+      const playerWon = () => {
         const pattern = [
                           [0, 1, 2],
                           [3, 4, 5],
@@ -71,25 +71,29 @@ const gameFlow = (() => {
           let markArr =  gameboard.gameBoardArray();
           let comment = document.getElementById("comment");
           let x =[];
+          let y =[];
           for (let i = 0; i < markArr.length; i++) {
-            if (markArr[i] === mark) {
+            if (markArr[i] === "O") {
               x.push(i); ///[0, 2, 4, 8]
+            } else if (markArr[i] === "X") {
+              y.push(i);
             }
           }
           for(let j = 0; j < pattern.length; j++) {
             if (x.indexOf(pattern[j][0]) !== -1 &&
                 x.indexOf(pattern[j][1]) !== -1 &&
                 x.indexOf(pattern[j][2]) !== -1) {
-              if (mark === "O") {
-                comment.textContent = "PLAYER 1 WON!";
-                endGame();
-              } else {
-                comment.textContent = "PLAYER 2 WON!";
-                endGame();
-              }
-            }
-            else if (x.indexOf(pattern[j]) === -1 &&
-                      markArr.indexOf("*") === -1 &&
+                  comment.textContent = "PLAYER 1 WON!";
+                  endGame();
+              } else if (y.indexOf(pattern[j][0]) !== -1 &&
+                         y.indexOf(pattern[j][1]) !== -1 &&
+                         y.indexOf(pattern[j][2]) !== -1) {
+                           comment.textContent = "PLAYER 2 WON!";
+                           endGame();
+              } else if ((x.indexOf(pattern[j][0]) === -1 ||
+                      x.indexOf(pattern[j][1]) === -1 ||
+                      x.indexOf(pattern[j][3]) === -1) &&
+                      markArr.indexOf("  ") === -1 &&
                        markArr.indexOf("") === -1) {
                 comment.textContent = "IT'S A TIE!";
             }
@@ -101,8 +105,7 @@ const gameFlow = (() => {
           const markSpace = document.querySelectorAll(".board");
           markSpace.forEach((space) => {
             space.addEventListener("mousemove", () => {
-              playerWon("O");
-              playerWon("X");
+              playerWon();
             })
           })
       }
@@ -111,7 +114,7 @@ const gameFlow = (() => {
           const markSpace = document.querySelectorAll(".board");
           markSpace.forEach((spaces) => {
             if (spaces.textContent === "") {
-              spaces.textContent = "*";
+              spaces.textContent = "  ";
             }
           });
       }
@@ -151,3 +154,4 @@ const player2 = Player("player2", "X");
 //-----Iitializing game-----------------------------------------------------//
 gameboard.renderBoard();
 gameboard.startGame();
+//end game different way
