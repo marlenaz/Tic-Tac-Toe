@@ -21,7 +21,6 @@ const gameboard = (() => {
         startButton.addEventListener("click", () => {
           markSpace.forEach((space) => space.textContent = "");
           gameFlow.playersTurns();
-          gameFlow.checkWin();
         })
     }
     //---render the array of players marks on board---//
@@ -47,7 +46,8 @@ const gameFlow = (() => {
   //functions
     //---changing marks from o to x---//
       const playersTurns = () => {
-          board.addEventListener("mouseover", () => {
+          const boardWindow = document.querySelector(".gameboard");
+          boardWindow.addEventListener("click", () => {
             if (player1.nextMove === true) {
               player1.makeMove(player1, player2);
             } else {
@@ -69,14 +69,17 @@ const gameFlow = (() => {
                           [2, 4, 6]
                         ];
           let markArr =  gameboard.gameBoardArray();
+          console.log("array", markArr);
           let comment = document.getElementById("comment");
           let x =[];
           let y =[];
           for (let i = 0; i < markArr.length; i++) {
             if (markArr[i] === "O") {
-              x.push(i); ///[0, 2, 4, 8]
+              x.push(i);
+              console.log("x", x);
             } else if (markArr[i] === "X") {
               y.push(i);
+              console.log("y", y);
             }
           }
           for(let j = 0; j < pattern.length; j++) {
@@ -94,8 +97,7 @@ const gameFlow = (() => {
                            endGame();
               } else if ((x.indexOf(pattern[j][0]) === -1 ||
                       x.indexOf(pattern[j][1]) === -1 ||
-                      x.indexOf(pattern[j][3]) === -1) &&
-                      markArr.indexOf("  ") === -1 &&
+                      x.indexOf(pattern[j][2]) === -1) &&
                        markArr.indexOf("") === -1) {
                 comment.textContent = "IT'S A TIE!";
                 winner = "Tie";
@@ -104,44 +106,14 @@ const gameFlow = (() => {
           }
       }
 
-      //--uruchamia sprawdzani czy jest win---/
-      const checkWin = () => {
-          const markSpace = document.querySelectorAll(".board");
-          markSpace.forEach((space) => {
-            space.addEventListener("mousemove", () => {
-              playerWon();
-            })
-          })
-      }
-
       const endGame = () => {
           console.log("working");
-          const markSpace = document.getElementById("board");
-          while (markSpace.firstChild) {
-            markSpace.removeChild(markSpace.firstChild);
-          }
-          markSpace.textContent = winner;
+          //disable nie działa, kasowanie nie działa...
           const startButton = document.getElementById("start");
           startButton.textContent = "RESTART";
-          startButton.setAttribute("class", "restart");
-          restartGame(markSpace);
-
       }
 
-      const restartGame = (content) => {
-          const restartButton = document.querySelector(".restart");
-          restartButton.addEventListener("click", () => {
-            content.textContent = "";
-            gameboard.renderBoard();
-            restartButton.textContent = "START";
-            restartButton.removeAttribute("class");
-            gameboard.startGame();
-          })
-      }
-
-
-
-  return { playersTurns, checkWin };
+  return { playersTurns, playerWon };
 })();
 
 //-----Player objects --------------------------------------------------------//
@@ -160,6 +132,7 @@ const Player = (name, mark) => {
               comment.textContent = name + " made his move! Time for next player";
               playerObj.nextMove = false;
               nextPlayerObj.nextMove = true;
+              gameFlow.playerWon();
               })
             }
           });
@@ -175,3 +148,9 @@ const player2 = Player("player2", "X");
 gameboard.renderBoard();
 gameboard.startGame();
 //dlaczego nie działa gameboard.startGame - nie czyści planszy - usunąć restart
+
+
+/*while (markSpace.firstChild) {
+  markSpace.removeChild(markSpace.firstChild);
+}
+markSpace.textContent = winner;*/
