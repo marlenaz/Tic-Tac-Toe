@@ -93,7 +93,7 @@ const gameFlow = (() => {
               } else if ((x.indexOf(pattern[j][0]) === -1 ||
                       x.indexOf(pattern[j][1]) === -1 ||
                       x.indexOf(pattern[j][3]) === -1) &&
-                      markArr.indexOf("  ") === -1 &&
+                      markArr.indexOf("I") === -1 &&
                        markArr.indexOf("") === -1) {
                 comment.textContent = "IT'S A TIE!";
             }
@@ -114,7 +114,7 @@ const gameFlow = (() => {
           const markSpace = document.querySelectorAll(".board");
           markSpace.forEach((spaces) => {
             if (spaces.textContent === "") {
-              spaces.textContent = "  ";
+              spaces.textContent = "I";
             }
           });
       }
