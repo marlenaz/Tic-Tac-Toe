@@ -43,7 +43,7 @@ const gameboard = (() => {
 
 //-----Game flow function--------------------------------------------------//
 const gameFlow = (() => {
-
+      let winner = "";
   //functions
     //---changing marks from o to x---//
       const playersTurns = () => {
@@ -84,18 +84,22 @@ const gameFlow = (() => {
                 x.indexOf(pattern[j][1]) !== -1 &&
                 x.indexOf(pattern[j][2]) !== -1) {
                   comment.textContent = "PLAYER 1 WON!";
+                  winner = "O";
                   endGame();
               } else if (y.indexOf(pattern[j][0]) !== -1 &&
                          y.indexOf(pattern[j][1]) !== -1 &&
                          y.indexOf(pattern[j][2]) !== -1) {
                            comment.textContent = "PLAYER 2 WON!";
+                           winner = "X";
                            endGame();
               } else if ((x.indexOf(pattern[j][0]) === -1 ||
                       x.indexOf(pattern[j][1]) === -1 ||
                       x.indexOf(pattern[j][3]) === -1) &&
-                      markArr.indexOf("I") === -1 &&
+                      markArr.indexOf("  ") === -1 &&
                        markArr.indexOf("") === -1) {
                 comment.textContent = "IT'S A TIE!";
+                winner = "Tie";
+                endGame();
             }
           }
       }
@@ -111,12 +115,28 @@ const gameFlow = (() => {
       }
 
       const endGame = () => {
-          const markSpace = document.querySelectorAll(".board");
-          markSpace.forEach((spaces) => {
-            if (spaces.textContent === "") {
-              spaces.textContent = "I";
-            }
-          });
+          console.log("working");
+          const markSpace = document.getElementById("board");
+          while (markSpace.firstChild) {
+            markSpace.removeChild(markSpace.firstChild);
+          }
+          markSpace.textContent = winner;
+          const startButton = document.getElementById("start");
+          startButton.textContent = "RESTART";
+          startButton.setAttribute("class", "restart");
+          restartGame(markSpace);
+
+      }
+
+      const restartGame = (content) => {
+          const restartButton = document.querySelector(".restart");
+          restartButton.addEventListener("click", () => {
+            content.textContent = "";
+            gameboard.renderBoard();
+            restartButton.textContent = "START";
+            restartButton.removeAttribute("class");
+            gameboard.startGame();
+          })
       }
 
 
@@ -154,4 +174,4 @@ const player2 = Player("player2", "X");
 //-----Iitializing game-----------------------------------------------------//
 gameboard.renderBoard();
 gameboard.startGame();
-//end game different way
+//dlaczego nie działa gameboard.startGame - nie czyści planszy - usunąć restart
