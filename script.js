@@ -108,7 +108,13 @@ const gameFlow = (() => {
 
       const endGame = () => {
           console.log("working");
-          //disable nie działa, kasowanie nie działa...
+          const spaces = document.querySelectorAll(".board");
+          spaces.forEach(space => {
+            if (space.textContent === "") {
+              space.textContent = "*";
+            }
+          })
+          //spaces.forEach( space => space.removeAttribute("class"));
           const startButton = document.getElementById("start");
           startButton.textContent = "RESTART";
       }
@@ -127,12 +133,12 @@ const Player = (name, mark) => {
           markSpace.forEach((space) => {
             if (space.textContent === "") {
               space.addEventListener("click", () => {
-              space.textContent = mark;
-              let comment = document.getElementById("comment");
-              comment.textContent = name + " made his move! Time for next player";
-              playerObj.nextMove = false;
-              nextPlayerObj.nextMove = true;
-              gameFlow.playerWon();
+                space.textContent = mark;
+                let comment = document.getElementById("comment");
+                comment.textContent = name + " made his move! Time for next player";
+                playerObj.nextMove = false;
+                nextPlayerObj.nextMove = true; //true false nie zmieniają się
+                gameFlow.playerWon();
               })
             }
           });
