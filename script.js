@@ -98,6 +98,7 @@ const gameFlow = (() => {
               } else if ((x.indexOf(pattern[j][0]) === -1 ||
                       x.indexOf(pattern[j][1]) === -1 ||
                       x.indexOf(pattern[j][2]) === -1) &&
+                       markArr.indexOf("*") === -1 &&
                        markArr.indexOf("") === -1) {
                 comment.textContent = "IT'S A TIE!";
                 winner = "Tie";
@@ -109,6 +110,8 @@ const gameFlow = (() => {
       const endGame = () => {
           console.log("working");
           const spaces = document.querySelectorAll(".board");
+          player1.nextMove = false;
+          player2.nextMove = false;
           spaces.forEach(space => {
             if (space.textContent === "") {
               space.textContent = "*";
@@ -125,7 +128,7 @@ const gameFlow = (() => {
 //-----Player objects --------------------------------------------------------//
 const Player = (name, mark) => {
   //Variables
-      let nextMove = true;
+  let nextMove = true;
   //Functions
     //---putting players mark on the board---//
       const makeMove = (playerObj, nextPlayerObj) => {
@@ -133,7 +136,9 @@ const Player = (name, mark) => {
           markSpace.forEach((space) => {
             if (space.textContent === "") {
               space.addEventListener("click", () => {
+                if (space.textContent !== "*") {
                 space.textContent = mark;
+                }
                 let comment = document.getElementById("comment");
                 comment.textContent = name + " made his move! Time for next player";
                 playerObj.nextMove = false;
@@ -153,7 +158,7 @@ const player2 = Player("player2", "X");
 //-----Iitializing game-----------------------------------------------------//
 gameboard.renderBoard();
 gameboard.startGame();
-//dlaczego nie działa gameboard.startGame - nie czyści planszy - usunąć restart
+//dlaczego playerWon wczytuje sie po kilka razy
 
 
 /*while (markSpace.firstChild) {
