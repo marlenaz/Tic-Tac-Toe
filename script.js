@@ -98,6 +98,9 @@ const gameFlow = (() => {
               } else if ((x.indexOf(pattern[j][0]) === -1 ||
                       x.indexOf(pattern[j][1]) === -1 ||
                       x.indexOf(pattern[j][2]) === -1) &&
+                     (y.indexOf(pattern[j][0]) === -1 ||
+                      y.indexOf(pattern[j][1]) === -1 ||
+                      y.indexOf(pattern[j][2]) === -1) &&
                        markArr.indexOf("*") === -1 &&
                        markArr.indexOf("") === -1) {
                 comment.textContent = "IT'S A TIE!";
@@ -110,14 +113,11 @@ const gameFlow = (() => {
       const endGame = () => {
           console.log("working");
           const spaces = document.querySelectorAll(".board");
-          player1.nextMove = false;
-          player2.nextMove = false;
           spaces.forEach(space => {
             if (space.textContent === "") {
               space.textContent = "*";
             }
           })
-          //spaces.forEach( space => space.removeAttribute("class"));
           const startButton = document.getElementById("start");
           startButton.textContent = "RESTART";
       }
@@ -132,6 +132,7 @@ const Player = (name, mark) => {
   //Functions
     //---putting players mark on the board---//
       const makeMove = (playerObj, nextPlayerObj) => {
+          gameFlow.playerWon();
           const markSpace = document.querySelectorAll(".board");
           markSpace.forEach((space) => {
             if (space.textContent === "") {
@@ -142,8 +143,7 @@ const Player = (name, mark) => {
                 let comment = document.getElementById("comment");
                 comment.textContent = name + " made his move! Time for next player";
                 playerObj.nextMove = false;
-                nextPlayerObj.nextMove = true; //true false nie zmieniają się
-                gameFlow.playerWon();
+                nextPlayerObj.nextMove = true;
               })
             }
           });
