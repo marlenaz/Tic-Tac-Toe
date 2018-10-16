@@ -42,7 +42,7 @@ const gameboard = (() => {
 
 //-----Game flow function--------------------------------------------------//
 const gameFlow = (() => {
-      let winner = "";
+     let winner = "";
   //functions
     //---changing marks from o to x---//
       const playersTurns = () => {
@@ -57,7 +57,7 @@ const gameFlow = (() => {
       }
 
         //---sprawdza czy jest win---//
-      const playerWon = () => {
+      const playerWon = (winner) => {
         const pattern = [
                           [0, 1, 2],
                           [3, 4, 5],
@@ -69,31 +69,29 @@ const gameFlow = (() => {
                           [2, 4, 6]
                         ];
           let markArr =  gameboard.gameBoardArray();
-          console.log("array", markArr);
           let comment = document.getElementById("comment");
           let x =[];
           let y =[];
           for (let i = 0; i < markArr.length; i++) {
             if (markArr[i] === "O") {
               x.push(i);
-              console.log("x", x);
             } else if (markArr[i] === "X") {
               y.push(i);
-              console.log("y", y);
             }
           }
+
           for(let j = 0; j < pattern.length; j++) {
             if (x.indexOf(pattern[j][0]) !== -1 &&
                 x.indexOf(pattern[j][1]) !== -1 &&
                 x.indexOf(pattern[j][2]) !== -1) {
                   comment.textContent = "PLAYER 1 WON!";
-                  winner = "O";
+                  gameFlow.winner = "O";
                   endGame();
               } else if (y.indexOf(pattern[j][0]) !== -1 &&
                          y.indexOf(pattern[j][1]) !== -1 &&
                          y.indexOf(pattern[j][2]) !== -1) {
                            comment.textContent = "PLAYER 2 WON!";
-                           winner = "X";
+                           gameFlow.winner = "X";
                            endGame();
               } else if ((x.indexOf(pattern[j][0]) === -1 ||
                       x.indexOf(pattern[j][1]) === -1 ||
@@ -104,14 +102,13 @@ const gameFlow = (() => {
                        markArr.indexOf("*") === -1 &&
                        markArr.indexOf("") === -1) {
                 comment.textContent = "IT'S A TIE!";
-                winner = "Tie";
+                gameFlow.winner = "Tie";
                 endGame();
             }
           }
       }
 
       const endGame = () => {
-          console.log("working");
           const spaces = document.querySelectorAll(".board");
           spaces.forEach(space => {
             if (space.textContent === "") {
@@ -119,10 +116,14 @@ const gameFlow = (() => {
             }
           })
           const startButton = document.getElementById("start");
-          startButton.textContent = "RESTART";
+          startButton.textContent = "NEXT ROUND";
       }
 
-  return { playersTurns, playerWon };
+      const points = () => {
+          //wybrać score area, ustalić 2 zmienne - punkty x i o. Punkty odpala endGame
+      }
+
+  return { playersTurns, playerWon, winner };
 })();
 
 //-----Player objects --------------------------------------------------------//
