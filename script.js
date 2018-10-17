@@ -43,6 +43,8 @@ const gameboard = (() => {
 //-----Game flow function--------------------------------------------------//
 const gameFlow = (() => {
      let winner = "";
+     let pointsO = 0;
+     let pointsX = 0;
   //functions
     //---changing marks from o to x---//
       const playersTurns = () => {
@@ -57,7 +59,7 @@ const gameFlow = (() => {
       }
 
         //---sprawdza czy jest win---//
-      const playerWon = (winner) => {
+      const playerWon = () => {
         const pattern = [
                           [0, 1, 2],
                           [3, 4, 5],
@@ -85,13 +87,13 @@ const gameFlow = (() => {
                 x.indexOf(pattern[j][1]) !== -1 &&
                 x.indexOf(pattern[j][2]) !== -1) {
                   comment.textContent = "PLAYER 1 WON!";
-                  gameFlow.winner = "O";
+                  gameFlow.pointsO += 1;
                   endGame();
               } else if (y.indexOf(pattern[j][0]) !== -1 &&
                          y.indexOf(pattern[j][1]) !== -1 &&
                          y.indexOf(pattern[j][2]) !== -1) {
                            comment.textContent = "PLAYER 2 WON!";
-                           gameFlow.winner = "X";
+                           gameFlow.pointsX += 1;
                            endGame();
               } else if ((x.indexOf(pattern[j][0]) === -1 ||
                       x.indexOf(pattern[j][1]) === -1 ||
@@ -117,13 +119,31 @@ const gameFlow = (() => {
           })
           const startButton = document.getElementById("start");
           startButton.textContent = "NEXT ROUND";
+          console.log(gameFlow.pointsO, gameFlow.pointsX);
+
       }
 
+
+
       const points = () => {
+          const scoreO = document.getElementById("1");
+          const scoreX = document.getElementById("2");
+          if (gameFlow.winner === "O") {
+            pointsO += 1;
+          }
+          else if (gameFlow.winner === "X") {
+            pointsX += 1;
+          }
+          else if (gameFlow.winner === "Tie") {
+            pointsO += 1;
+            pointsX += 1;
+          }
+          console.log(pointsO, pointsX);
+          // dodane zamiast winner punkty w player won, ale po kliknieciach doliczają się kilkakrotnie punkty
           //wybrać score area, ustalić 2 zmienne - punkty x i o. Punkty odpala endGame
       }
 
-  return { playersTurns, playerWon, winner };
+  return { playersTurns, playerWon, winner, pointsO, pointsX };
 })();
 
 //-----Player objects --------------------------------------------------------//
