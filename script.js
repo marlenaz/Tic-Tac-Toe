@@ -19,8 +19,11 @@ const gameboard = (() => {
         const startButton = document.getElementById("start");
         const markSpace = document.querySelectorAll(".board");
         startButton.addEventListener("click", () => {
+          gameFlow.roundOver = true;
           markSpace.forEach((space) => space.textContent = "");
-          gameFlow.playersTurns();
+          if (gameFlow.playersTurnsEnabled === false) {
+              gameFlow.playersTurns();
+            }
         })
     }
     //---render the array of players marks on board---//
@@ -45,9 +48,12 @@ const gameFlow = (() => {
      let winner = "";
      let pointsO = 0;
      let pointsX = 0;
+     let roundOver = true;
+     let playersTurnsEnabled = false;
   //functions
     //---changing marks from o to x---//
       const playersTurns = () => {
+          gameFlow.playersTurnsEnabled = true;
           const boardWindow = document.querySelector(".gameboard");
           boardWindow.addEventListener("click", () => {
             if (player1.nextMove === true) {
@@ -87,15 +93,16 @@ const gameFlow = (() => {
                 x.indexOf(pattern[j][1]) !== -1 &&
                 x.indexOf(pattern[j][2]) !== -1) {
                   comment.textContent = "PLAYER 1 WON!";
-                  gameFlow.pointsO += 1;
+                  gameFlow.winner = "O";
                   endGame();
               } else if (y.indexOf(pattern[j][0]) !== -1 &&
                          y.indexOf(pattern[j][1]) !== -1 &&
                          y.indexOf(pattern[j][2]) !== -1) {
                            comment.textContent = "PLAYER 2 WON!";
-                           gameFlow.pointsX += 1;
+                           gameFlow.winner = "X";
                            endGame();
-              } else if ((x.indexOf(pattern[j][0]) === -1 ||
+              } else {
+                 if ((x.indexOf(pattern[j][0]) === -1 ||
                       x.indexOf(pattern[j][1]) === -1 ||
                       x.indexOf(pattern[j][2]) === -1) &&
                      (y.indexOf(pattern[j][0]) === -1 ||
@@ -105,8 +112,10 @@ const gameFlow = (() => {
                        markArr.indexOf("") === -1) {
                 comment.textContent = "IT'S A TIE!";
                 gameFlow.winner = "Tie";
+                console.log("tie");
                 endGame();
             }
+           }
           }
       }
 
@@ -119,7 +128,8 @@ const gameFlow = (() => {
           })
           const startButton = document.getElementById("start");
           startButton.textContent = "NEXT ROUND";
-          console.log(gameFlow.pointsO, gameFlow.pointsX);
+          points();
+
 
       }
 
@@ -128,22 +138,31 @@ const gameFlow = (() => {
       const points = () => {
           const scoreO = document.getElementById("1");
           const scoreX = document.getElementById("2");
-          if (gameFlow.winner === "O") {
-            pointsO += 1;
-          }
-          else if (gameFlow.winner === "X") {
-            pointsX += 1;
-          }
-          else if (gameFlow.winner === "Tie") {
-            pointsO += 1;
-            pointsX += 1;
-          }
+
+          if (gameFlow.roundOver === true) {
+              if (gameFlow.winner === "O") {
+                pointsO += 1;
+                console.log("points to O");
+              }
+              else if (gameFlow.winner === "X") {
+                pointsX += 1;
+                console.log("points to X");
+              }
+              else if (gameFlow.winner === "Tie") {
+                pointsO += 1;
+                pointsX += 1;
+                console.log("points to both");
+
+              }
+            }
+          gameFlow.roundOver = false;
           console.log(pointsO, pointsX);
-          // dodane zamiast winner punkty w player won, ale po kliknieciach doliczają się kilkakrotnie punkty
-          //wybrać score area, ustalić 2 zmienne - punkty x i o. Punkty odpala endGame
+          // przy ruchu kiedy ostatni ruch daje wygraną - tie loguje się kilka razy mimo, ze nie ma remisu, punkty dodaja sie jak na remis
+          // nie odpala się przy tym makeMove czyli bład leży na pętli
+          // spróbować wrzucić else if od tie pod osobne if zagnieżdżone pod O/X
       }
 
-  return { playersTurns, playerWon, winner, pointsO, pointsX };
+  return { playersTurns, playerWon, winner, pointsO, pointsX, roundOver, playersTurnsEnabled };
 })();
 
 //-----Player objects --------------------------------------------------------//
@@ -154,6 +173,7 @@ const Player = (name, mark) => {
     //---putting players mark on the board---//
       const makeMove = (playerObj, nextPlayerObj) => {
           gameFlow.playerWon();
+          console.log("THIS");
           const markSpace = document.querySelectorAll(".board");
           markSpace.forEach((space) => {
             if (space.textContent === "") {
