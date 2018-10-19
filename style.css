@@ -1,12 +1,103 @@
-#board {
-  width: 150px;
-  height: 150px;
+html {
+  font-size:62.5%;
 }
 
-#board div {
-  display: inline-block;
-  height: 50px;
-  width: 50px;
+body {
+  font-size:1.6rem;
+  margin:0;
+  height:100vh;
+  background:hsl(300, 15%, 36%);
+  font-family: 'Montserrat', 'Arial', sans-serif;
+  letter-spacing: 1px;
+}
+
+.gameboard {
+  width: 80%;
+  margin:0 auto;
+  padding-top:60px;
+}
+
+#board {
+  display:flex;
+  flex-wrap: wrap;
+  width: 320px;
+  height: 320px;
+  margin: 0 auto;
+  /*width: 150px;
+  height: 150px;*/
+}
+
+.board {
   position: relative;
-  background-color: grey;
+  width:90px;
+  height:90px;
+  margin:5px;
+  border-radius: 0.3em;
+  background: transparent;
+  font-size: 80px;
+  text-align: center;
+  color: hsl(300, 15%, 33%);
+}
+
+#empty {
+  border-radius: 0.1em;
+  background: hsl(300, 15%, 33%);
+}
+
+#O, #X {
+  background: transparent;
+}
+
+#O {
+  color: hsl(7, 63%, 78%);
+}
+
+#X {
+  color: hsl(194, 100%, 73%);
+}
+
+#comment {
+  padding-right: 17px;
+  text-align: center;
+  color: hsla(300, 15%, 20%, 1);
+  font-size: 2rem;
+}
+
+#start {
+  position:absolute;
+  top:0;
+  left:49%;
+  outline:none;
+  border:none;
+  cursor:pointer;
+
+  background: hsl(300, 3%, 18%);
+  padding: 1rem 1.5rem;
+
+  font-size: 2.4rem;
+  color: hsla(300, 15%, 44%, 1);
+  border-radius: 0 0 0.2rem 0.2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border:1px solid hsla(300, 3%, 17%, 1);
+  transform:translate(-50%, 0);
+  transition: transform 200ms ease-out;
+}
+
+#start:hover {
+  background: hsl(300, 3%, 20%);
+}
+
+.score {
+  display:flex;
+  justify-content: space-between;
+  position:relative;
+  left: -10px;
+  max-width: 320px;
+  margin:2rem auto 0 ;
+  border-top: 2px solid hsla(300, 15%, 20%, 1);
+  padding-top: 2rem;
+  opacity: 1;
+  text-align: center;
+  color: hsla(300, 15%, 20%, 1);
+  font-size: 2rem;
 }

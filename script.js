@@ -164,9 +164,11 @@ const Player = (name, mark) => {
           const markSpace = document.querySelectorAll(".board");
           markSpace.forEach((space) => {
             if (space.textContent === "") {
+              space.setAttribute("id", "empty");
               space.addEventListener("click", () => {
                 if (space.textContent !== "*") {
                 space.textContent = mark;
+                markColor(space);
                 }
                 let comment = document.getElementById("comment");
                 comment.textContent = `Time for Player [${nextPlayerObj.mark}]`;
@@ -175,6 +177,15 @@ const Player = (name, mark) => {
               })
             }
           });
+      }
+      //---adds id to each cell, to colour X's and O's marks ---//
+      const markColor = (cell) => {
+        if (cell.textContent === "O") {
+          cell.setAttribute("id", "O");
+        }
+        else if (cell.textContent === "X") {
+          cell.setAttribute("id", "X");
+        }
       }
 
   return { name, mark, nextMove, makeMove };
